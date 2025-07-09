@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eddy Car Battery Solution - Stok Bateri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff5f5; /* Latar belakang putih lembut dengan sedikit merah */
+        }
+
+        header {
+            background: linear-gradient(135deg, #d32f2f, #fbc02d); /* Gradient merah ke kuning */
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        #stock-section {
+            margin-bottom: 2rem;
+        }
+
+        #stock-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #d32f2f; /* Merah untuk tajuk */
+            font-weight: 600;
+        }
+
+        .filter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .filter select {
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #fbc02d; /* Sempadan kuning */
+            background-color: white;
+            cursor: pointer;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .filter select:focus {
+            outline: none;
+            border-color: #d32f2f; /* Merah apabila fokus */
+            box-shadow: 0 0 5px rgba(211, 47, 47, 0.5);
+        }
+
+        .filter .total-stock {
+            font-weight: 600;
+            color: #d32f2f; /* Merah untuk teks jumlah stok */
+            background-color: #fff9c4; /* Latar belakang kuning lembut */
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        .stock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stock-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stock-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .stock-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .stock-item p {
+            margin-bottom: 0.75rem;
+            color: #555;
+        }
+
+        .stock-item .reorder {
+            color: #d32f2f; /* Merah untuk teks reorder */
+            font-weight: 600;
+        }
+
+        .stock-item input {
+            width: 100px;
+            padding: 0.5rem;
+            margin: 0.3rem;
+            border: 1px solid #fbc02d; /* Sempadan kuning */
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+
+        .stock-item input:focus {
+            outline: none;
+            border-color: #d32f2f; /* Merah apabila fokus */
+        }
+
+        .stock-item .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .stock-item button {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .stock-item .save-btn {
+            background-color: #fbc02d; /* Kuning untuk butang simpan */
+            color: #333;
+        }
+
+        .stock-item .save-btn:hover {
+            background-color: #f9a825;
+            transform: scale(1.05);
+        }
+
+        .stock-item .delete-btn {
+            background-color: #d32f2f; /* Merah untuk butang padam */
+            color: white;
+        }
+
+        .stock-item .delete-btn:hover {
+            background-color: #b71c1c;
+            transform: scale(1.05);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #d32f2f, #fbc02d); /* Gradient merah ke kuning */
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer a {
+            color: #fff9c4; /* Kuning lembut untuk pautan */
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            #stock-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .filter {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .stock-item {
+                padding: 1rem;
+            }
+
+            .stock-item input {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Eddy Car Battery Solution</h1>
+        <p>Penyelesaian Bateri Kereta Terpercaya</p>
+    </header>
+
+    <main>
+        <section id="stock-section">
+            <h2>Stok Bateri Tersedia</h2>
+            <div class="filter">
+                <label for="brand-filter">Tapis mengikut jenama:</label>
+                <select id="brand-filter">
+                    <option value="all">Semua Jenama</option>
+                    <option value="CENTURY MAX">CENTURY MAX</option>
+                    <option value="MOTOLITE MF">MOTOLITE MF</option>
+                    <option value="AMARON">AMARON</option>
+                </select>
+                <span class="total-stock" id="total-stock">Jumlah Stok: 0 unit</span>
+            </div>
+            <div id="stock-list" class="stock-grid"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Eddy Car Battery Solution. Hubungi kami di: <a href="tel:+601120969838">01120969838</a> | Alamat: No.5A Lot 3691 Jalan Haji Taib, Jalan Kebun Batu 7, Seksyen 30, 42450 Klang, Selangor</p>
+    </footer>
+
+    <script>
+        // Data stok dari fail Excel
+        let stockData = JSON.parse(localStorage.getItem('stockData')) || [
+            // CENTURY MAX
+            { id: 1, brand: "CENTURY MAX", size: "NS40ZL", stock: "15 CAW", bufferStock: 26, reorder: 11 },
+            { id: 2, brand: "CENTURY MAX", size: "NS60LS", stock: "5 CAW", bufferStock: -11, reorder: 6 },
+            { id: 3, brand: "CENTURY MAX", size: "NS60S", stock: "8 CAW", bufferStock: 6, reorder: 2 },
+            { id: 4, brand: "CENTURY MAX", size: "NS60Lst", stock: "5 CAW", bufferStock: -7, reorder: 2 },
+            { id: 5, brand: "CENTURY MAX", size: "NS60st", stock: "2 CAW", bufferStock: -3, reorder: 1 },
+            { id: 6, brand: "CENTURY MAX", size: "75D23L", stock: "8 CAW", bufferStock: -9, reorder: 1 },
+            { id: 7, brand: "CENTURY MAX", size: "NS70L", stock: "6 CAW", bufferStock: -9, reorder: 3 },
+            { id: 8, brand: "CENTURY MAX", size: "NS70", stock: "2 CAW", bufferStock: -3, reorder: 1 },
+            { id: 9, brand: "CENTURY MAX", size: "NX120-7L", stock: "2 CAW", bufferStock: -3, reorder: 1 },
+            { id: 10, brand: "CENTURY MAX", size: "NX120-7", stock: "2 CAW", bufferStock: -3, reorder: 1 },
+            { id: 11, brand: "CENTURY MAX", size: "DIN55R", stock: "4 CAW", bufferStock: -8, reorder: 4 },
+            { id: 12, brand: "CENTURY MAX", size: "DIN55L", stock: "4 CAW", bufferStock: -6, reorder: 2 },
+            { id: 13, brand: "CENTURY MAX", size: "DIN45L", stock: "1 CAW", bufferStock: -2, reorder: 1 },
+            { id: 14, brand: "CENTURY MAX", size: "DIN66L", stock: "3 CAW", bufferStock: -4, reorder: 1 },
+            { id: 15, brand: "CENTURY MAX", size: "DIN100L", stock: "1 CAW", bufferStock: -5, reorder: 4 },
+            { id: 16, brand: "CENTURY MAX", size: "Q85-EFB", stock: "3 CAW", bufferStock: 2, reorder: 1 },
+            { id: 17, brand: "CENTURY MAX", size: "S95 EFB", stock: "2 CAW", bufferStock: 2, reorder: 0 },
+            { id: 18, brand: "CENTURY MAX", size: "M42L-EFB", stock: "8 CAW", bufferStock: -13, reorder: 5 },
+            { id: 19, brand: "CENTURY MAX", size: "M42R EFB", stock: "4 CAW", bufferStock: -8, reorder: 0 },
+            // MOTOLITE MF
+            { id: 20, brand: "MOTOLITE MF", size: "NS40ZL", stock: "20 MCW", bufferStock: -23, reorder: 3 },
+            { id: 21, brand: "MOTOLITE MF", size: "NS60LS", stock: "6 MCW", bufferStock: -5, reorder: 1 },
+            { id: 22, brand: "MOTOLITE MF", size: "NS60S", stock: "8 MCW", bufferStock: -7, reorder: 1 },
+            { id: 23, brand: "MOTOLITE MF", size: "NS60Lst", stock: "4 MCW", bufferStock: -12, reorder: 8 },
+            { id: 24, brand: "MOTOLITE MF", size: "NS60st", stock: "2 MCW", bufferStock: -3, reorder: 1 },
+            { id: 25, brand: "MOTOLITE MF", size: "55D23L", stock: "6 MCW", bufferStock: -9, reorder: 3 },
+            { id: 26, brand: "MOTOLITE MF", size: "NS70", stock: "2 MCW", bufferStock: -3, reorder: 1 },
+            { id: 27, brand: "MOTOLITE MF", size: "NS70L", stock: "4 MCW", bufferStock: 5, reorder: 1 },
+            { id: 28, brand: "MOTOLITE MF", size: "NX120-7L", stock: "3 MCW", bufferStock: -2, reorder: 1 },
+            { id: 29, body: "MOTOLITE MF", size: "NX120-7", stock: "2 MCW", bufferStock: -4, reorder: 2 },
+            { id: 30, brand: "MOTOLITE MF", size: "N70Z", stock: "2 MCW", bufferStock: 0, reorder: 2 },
+            { id: 31, brand: "MOTOLITE MF", size: "DIN55R", stock: "5 MCW", bufferStock: -6, reorder: 1 },
+            { id: 32, brand: "MOTOLITE MF", size: "DIN55L", stock: "4 MCW", bufferStock: -6, reorder: 2 },
+            { id: 33, brand: "MOTOLITE MF", size: "DIN66L", stock: "3 MCW", bufferStock: -3, reorder: 0 },
+            { id: 34, brand: "MOTOLITE MF", size: "DIN100L", stock: "1 MCW", bufferStock: 1, reorder: 0 },
+            // AMARON
+            { id: 35, brand: "AMARON", size: "NS40ZL", stock: "6 AMGO", bufferStock: 3, reorder: 3 },
+            { id: 36, brand: "AMARON", size: "NS60S", stock: "2 AMGO", bufferStock: -1, reorder: 1 },
+            { id: 37, brand: "AMARON", size: "NS60LS", stock: "3 AMGO", bufferStock: -1, reorder: 2 },
+            { id: 38, brand: "AMARON", size: "NS60Lst", stock: "2 AMGO", bufferStock: 2, reorder: 0 },
+            { id: 39, brand: "AMARON", size: "DIN55L", stock: "1 AMGO", bufferStock: 1, reorder: 0 },
+            { id: 40, brand: "AMARON", size: "DIN80L", stock: "2 AMAGM", bufferStock: 2, reorder: 0 }
+        ];
+
+        // Fungsi untuk mengira jumlah keseluruhan stok
+        function calculateTotalStock(items) {
+            return items.reduce((total, item) => {
+                const stockValue = parseInt(item.stock.match(/\d+/)) || 0;
+                return total + stockValue;
+            }, 0);
+        }
+
+        // Fungsi untuk menampilkan stok
+        function displayStock(items) {
+            const stockList = document.getElementById("stock-list");
+            const totalStockElement = document.getElementById("total-stock");
+            stockList.innerHTML = "";
+
+            items.forEach(item => {
+                const stockItem = document.createElement("div");
+                stockItem.classList.add("stock-item");
+                stockItem.innerHTML = `
+                    <h3>${item.brand} ${item.size}</h3>
+                    <p>Stok: <input type="text" value="${item.stock}" id="stock-${item.id}"></p>
+                    <p>Buffer Stok: <input type="number" value="${item.bufferStock}" id="buffer-${item.id}"></p>
+                    <p class="${item.reorder > 0 ? 'reorder' : ''}">Pesan Semula: <input type="number" value="${item.reorder}" id="reorder-${item.id}"></p>
+                    <div class="button-group">
+                        <button class="save-btn" onclick="saveStock(${item.id})">Simpan</button>
+                        <button class="delete-btn" onclick="deleteStock(${item.id})">Padam</button>
+                    </div>
+                `;
+                stockList.appendChild(stockItem);
+            });
+
+            // Papar jumlah keseluruhan stok
+            totalStockElement.textContent = `Jumlah Stok: ${calculateTotalStock(items)} unit`;
+        }
+
+        // Fungsi untuk menyimpan perubahan stok
+        function saveStock(id) {
+            const stockInput = document.getElementById(`stock-${id}`).value;
+            const bufferInput = document.getElementById(`buffer-${id}`).value;
+            const reorderInput = document.getElementById(`reorder-${id}`).value;
+
+            if (!stockInput.trim()) {
+                alert("Sila masukkan nilai stok yang sah!");
+                return;
+            }
+
+            const item = stockData.find(item => item.id === id);
+            if (item) {
+                item.stock = stockInput.trim();
+                item.bufferStock = parseInt(bufferInput) || 0;
+                item.reorder = parseInt(reorderInput) || 0;
+                localStorage.setItem('stockData', JSON.stringify(stockData));
+                filterStock(); // Muat semula senarai stok
+            } else {
+                alert("Item tidak ditemui!");
+            }
+        }
+
+        // Fungsi untuk memadam stok
+        function deleteStock(id) {
+            if (confirm('Adakah anda pasti ingin memadam item ini?')) {
+                stockData = stockData.filter(item => item.id !== id);
+                localStorage.setItem('stockData', JSON.stringify(stockData));
+                filterStock(); // Muat semula senarai stok
+            }
+        }
+
+        // Fungsi untuk menapis stok mengikut jenama
+        function filterStock() {
+            const brandFilter = document.getElementById("brand-filter").value;
+            const filteredStock = brandFilter === "all" 
+                ? stockData 
+                : stockData.filter(item => item.brand === brandFilter);
+            displayStock(filteredStock);
+        }
+
+        // Inisialisasi halaman dengan semua stok
+        document.addEventListener("DOMContentLoaded", () => {
+            displayStock(stockData);
+
+            // Event listener untuk penapis
+            document.getElementById("brand-filter").addEventListener("change", filterStock);
+        });
+    </script>
+</body>
+</html>
